@@ -43,6 +43,7 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import '../styles/pages/menupage.css';
+import { getMenus, getProxiedUrl } from '../utils/api';
 
 // Menu item type
 interface MenuItem {
@@ -102,13 +103,19 @@ const MenuPage: React.FC = () => {
   const fetchMenuItems = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/menus/list');
       
-      if (!response.ok) {
-        throw new Error('Failed to fetch menu items');
-      }
+      // Option 1: Using our API utility
+      const response = await getMenus();
+      const data: MenuItem[] = response.data;
       
-      const data: MenuItem[] = await response.json();
+      // Option 2: Using fetch with proxied URL (alternative approach)
+      // const apiUrl = 'http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/menus/list';
+      // const proxiedUrl = getProxiedUrl(apiUrl);
+      // const response = await fetch(proxiedUrl);
+      // if (!response.ok) {
+      //   throw new Error('Failed to fetch menu items');
+      // }
+      // const data: MenuItem[] = await response.json();
       
       // Group menu items by category
       const categorizedMenu = processCategorizedData(data);

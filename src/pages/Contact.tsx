@@ -40,6 +40,7 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 import LocalActivityIcon from '@mui/icons-material/LocalActivity';
 import { RiBilliardsFill } from "react-icons/ri";
 import '../styles/pages/contactpage.css';
+import { sendContactMessage } from '../utils/api';
 
 const ContactPage: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -101,18 +102,8 @@ const ContactPage: React.FC = () => {
     };
     
     try {
-      const response = await fetch('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/message/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Something went wrong');
-      }
+      // Using our API utility
+      const response = await sendContactMessage(payload);
       
       setSubmitted(true);
       setOpen(true);

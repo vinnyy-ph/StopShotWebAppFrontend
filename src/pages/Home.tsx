@@ -27,6 +27,7 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import SportsBarIcon from '@mui/icons-material/SportsBar';
 import '../styles/pages/homepage.css';
 import AgeVerificationPopup from '../components/AgeVerificationPopup';
+import { getMenus, getFeedback, getProxiedUrl } from '../utils/api';
 
 // Hero Slideshow Data - Enhanced descriptions
 const slides = [
@@ -264,13 +265,10 @@ const HomePage: React.FC = () => {
   const fetchMenuHighlights = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/menus/list');
       
-      if (!response.ok) {
-        throw new Error('Failed to fetch menu items');
-      }
-      
-      const data: MenuItem[] = await response.json();
+      // Using the API utility
+      const response = await getMenus();
+      const data: MenuItem[] = response.data;
       
       // Select specific late-night favorites
       const categories = ['COCKTAILS', 'BEER', 'APPETIZERS'];
@@ -298,13 +296,11 @@ const HomePage: React.FC = () => {
   const fetchFeedback = async () => {
     try {
       setFeedbackLoading(true);
-      const response = await fetch('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/feedback/');
       
-      if (!response.ok) {
-        throw new Error('Failed to fetch feedback');
-      }
+      // Using the API utility
+      const response = await getFeedback();
+      const data: Feedback[] = response.data;
       
-      const data: Feedback[] = await response.json();
       setFeedbacks(data.length > 0 ? data : fallbackTestimonials);
     } catch (error) {
       console.error('Error fetching feedback data:', error);

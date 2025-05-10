@@ -64,4 +64,27 @@ export const postReservation = (data: any, config = {}) => {
 
 export const logout = (config = {}) => {
   return api.post(getEndpoint('auth/logout/'), {}, config);
+};
+
+// Add menu endpoints
+export const getMenus = (config = {}) => {
+  return api.get(getEndpoint('menus/list'), config);
+};
+
+// Generic fetch function for any API endpoint
+export const fetchFromApi = (endpoint: string, config = {}) => {
+  return api.get(getEndpoint(endpoint), config);
+};
+
+// Proxy any URL - useful for fetch() API
+export const getProxiedUrl = (url: string) => {
+  if (url.includes(API_BASE_URL)) {
+    return createProxiedUrl(url);
+  }
+  return url;
+};
+
+// Add message endpoint
+export const sendContactMessage = (data: any, config = {}) => {
+  return api.post(getEndpoint('message/'), data, config);
 }; 
