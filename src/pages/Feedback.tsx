@@ -49,7 +49,7 @@ import axios from 'axios';
 import { postFeedback, getFeedback } from '../utils/api';
 
 // Testimonial data for the marquee
-const testimonials = [
+const TEST_TESTIMONIALS = [
   {
     id: 1,
     name: 'Michael J.',
@@ -131,34 +131,52 @@ const FeedbackPage: React.FC = () => {
         setIsLoading(true);
         const response = await getFeedback();
         
+        // Validate the response data
+        const feedbacks = Array.isArray(response.data) ? response.data : [];
+        
+        // Make sure we only get items with valid user objects
+        const validFeedbacks = feedbacks.filter((item: any) => 
+          item && item.approved && item.user && item.user.first_name && item.user.last_name
+        );
+        
         // Get random 5 feedbacks if there are more than 5
-        const feedbacks = response.data;
-        const approvedFeedbacks = feedbacks.filter((item: any) => item.approved);
+        const randomFeedbacks = validFeedbacks.length > 5 
+          ? [...validFeedbacks].sort(() => 0.5 - Math.random()).slice(0, 5)
+          : validFeedbacks;
         
-        const randomFeedbacks = approvedFeedbacks.length > 5 
-          ? [...approvedFeedbacks].sort(() => 0.5 - Math.random()).slice(0, 5)
-          : approvedFeedbacks;
-        
-        // Map the API response to the testimonials format
+        // Map the API response to the testimonials format with safety checks
         const mappedTestimonials = randomFeedbacks.map((feedback: any) => {
-          const firstName = feedback.user.first_name;
-          const lastName = feedback.user.last_name;
-          const name = `${firstName} ${lastName.charAt(0)}.`;
-          const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
-          const date = new Date(feedback.created_at).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-          
-          return {
-            id: feedback.feedback_id,
-            name: name,
-            avatar: `https://placehold.co/400x400/333/fff?text=${initials}`,
-            rating: feedback.experience_rating,
-            text: feedback.feedback_text,
-            date: date
-          };
+          try {
+            const firstName = feedback.user?.first_name || "Guest";
+            const lastName = feedback.user?.last_name || "User";
+            const name = `${firstName} ${lastName.charAt(0)}.`;
+            const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`;
+            const date = new Date(feedback.created_at).toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            
+            return {
+              id: feedback.feedback_id || Math.random().toString(),
+              name: name,
+              avatar: `https://placehold.co/400x400/333/fff?text=${initials}`,
+              rating: feedback.experience_rating || 5,
+              text: feedback.feedback_text || "",
+              date: date
+            };
+          } catch (err) {
+            console.error('Error mapping feedback item:', err);
+            // Return a default item if there's an error
+            return {
+              id: Math.random().toString(),
+              name: "Guest User",
+              avatar: "https://placehold.co/400x400/333/fff?text=GU",
+              rating: 5,
+              text: "Great experience!",
+              date: new Date().toLocaleDateString()
+            };
+          }
         });
         
         if (mappedTestimonials.length > 0) {
@@ -166,13 +184,13 @@ const FeedbackPage: React.FC = () => {
           setActiveTestimonialIndex(0);
         } else {
           // Fallback to test testimonials if no approved feedbacks
-          setTestimonials(testimonials);
+          setTestimonials(TEST_TESTIMONIALS);
           setActiveTestimonialIndex(0);
         }
       } catch (error) {
         console.error('Error fetching feedbacks:', error);
         // Fallback to test testimonials if API fails
-        setTestimonials(testimonials);
+        setTestimonials(TEST_TESTIMONIALS);
         setActiveTestimonialIndex(0);
       } finally {
         setIsLoading(false);

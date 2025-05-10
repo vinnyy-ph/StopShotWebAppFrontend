@@ -268,13 +268,20 @@ const HomePage: React.FC = () => {
       
       // Using the API utility
       const response = await getMenus();
-      const data: MenuItem[] = response.data;
+      
+      // Ensure data is an array
+      const data = Array.isArray(response.data) ? response.data : [];
+      
+      if (data.length === 0) {
+        throw new Error('No menu items returned from API');
+      }
       
       // Select specific late-night favorites
       const categories = ['COCKTAILS', 'BEER', 'APPETIZERS'];
       const highlights = categories.map(category => {
+        // Check if data is valid before filtering
         const categoryItems = data.filter(item => 
-          item.category === category && item.is_available
+          item && item.category === category && item.is_available
         );
         // Return a random item from each category or the first one
         return categoryItems.length > 0 
@@ -299,9 +306,16 @@ const HomePage: React.FC = () => {
       
       // Using the API utility
       const response = await getFeedback();
-      const data: Feedback[] = response.data;
       
-      setFeedbacks(data.length > 0 ? data : fallbackTestimonials);
+      // Ensure data is an array
+      const data = Array.isArray(response.data) ? response.data : [];
+      
+      // Process and validate data items
+      const validFeedbacks = data.filter(item => 
+        item && item.user && item.user.first_name && item.feedback_text
+      ) as Feedback[];
+      
+      setFeedbacks(validFeedbacks.length > 0 ? validFeedbacks : fallbackTestimonials);
     } catch (error) {
       console.error('Error fetching feedback data:', error);
       setFeedbackError('Unable to load customer feedback. Please try again later.');

@@ -177,7 +177,13 @@ const MenuPage: React.FC = () => {
       // Try the API utility first
       try {
         const response = await getMenus();
-        const data: MenuItem[] = response.data;
+        
+        // Check if response.data exists and is an array
+        const data = Array.isArray(response.data) ? response.data : [];
+        
+        if (data.length === 0) {
+          throw new Error('No menu items returned from API');
+        }
         
         // Group menu items by category
         const categorizedMenu = processCategorizedData(data);
