@@ -26,7 +26,7 @@ import RateReviewIcon from '@mui/icons-material/RateReview';
 import { Link } from 'react-router-dom';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
-import '../styles/components/Navbar.css';
+import '../styles/components/navbar.css';
 
 const navLinks = [
   { title: 'Home', path: '/', icon: <HomeIcon /> },
