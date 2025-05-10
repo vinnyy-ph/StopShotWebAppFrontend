@@ -29,7 +29,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import FilterAltIcon from '@mui/icons-material/FilterAlt';
 import StarIcon from '@mui/icons-material/Star';
 import CloseIcon from '@mui/icons-material/Close';
-import axios from 'axios';
+import { getFeedback as apiFetchFeedback, deleteFeedback as apiDeleteFeedback } from '../../../utils/api';
 
 import FeedbackResponseDialog from '../dialogs/FeedbackResponseDialog';
 import { mockFeedbackData } from '../dashboard'; // Keep for type reference
@@ -70,7 +70,7 @@ const Feedback: React.FC<FeedbackProps> = ({
     setError('');
     
     try {
-      const response = await axios.get('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/feedback/', {
+      const response = await apiFetchFeedback({
         headers: {
           'Authorization': `Token ${localStorage.getItem('authToken')}`
         }
@@ -110,7 +110,7 @@ const Feedback: React.FC<FeedbackProps> = ({
   const handleDeleteFeedback = async (id: number) => {
     if (window.confirm('Are you sure you want to delete this feedback?')) {
       try {
-        await axios.delete(`http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/feedback/${id}/`, {
+        await apiDeleteFeedback(id.toString(), {
           headers: {
             'Authorization': `Token ${localStorage.getItem('authToken')}`
           }

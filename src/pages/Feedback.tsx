@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Box, 
   Typography, 
@@ -20,7 +20,10 @@ import {
   IconButton,
   InputAdornment,
   Fade,
-  Chip
+  Chip,
+  Skeleton,
+  useMediaQuery,
+  Stack
 } from '@mui/material';
 import SportsBasketballIcon from '@mui/icons-material/SportsBasketball';
 import StarIcon from '@mui/icons-material/Star';
@@ -37,8 +40,13 @@ import MicExternalOnIcon from '@mui/icons-material/MicExternalOn';
 import SportsBarIcon from '@mui/icons-material/SportsBar';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { RiBilliardsFill } from "react-icons/ri";
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { motion } from 'framer-motion';
 import '../styles/pages/feedback.css';
 import axios from 'axios';
+import { postFeedback, getFeedback } from '../utils/api';
 
 // Testimonial data for the marquee
 const testimonials = [
@@ -120,12 +128,16 @@ const FeedbackPage: React.FC = () => {
   useEffect(() => {
     const fetchFeedbacks = async () => {
       try {
-        const response = await axios.get('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/feedback/');
+        setIsLoading(true);
+        const response = await getFeedback();
+        
         // Get random 5 feedbacks if there are more than 5
         const feedbacks = response.data;
-        const randomFeedbacks = feedbacks.length > 5 
-          ? [...feedbacks].sort(() => 0.5 - Math.random()).slice(0, 5)
-          : feedbacks;
+        const approvedFeedbacks = feedbacks.filter((item: any) => item.approved);
+        
+        const randomFeedbacks = approvedFeedbacks.length > 5 
+          ? [...approvedFeedbacks].sort(() => 0.5 - Math.random()).slice(0, 5)
+          : approvedFeedbacks;
         
         // Map the API response to the testimonials format
         const mappedTestimonials = randomFeedbacks.map((feedback: any) => {
@@ -149,10 +161,20 @@ const FeedbackPage: React.FC = () => {
           };
         });
         
-        setTestimonials(mappedTestimonials);
-        setIsLoading(false);
+        if (mappedTestimonials.length > 0) {
+          setTestimonials(mappedTestimonials);
+          setActiveTestimonialIndex(0);
+        } else {
+          // Fallback to test testimonials if no approved feedbacks
+          setTestimonials(testimonials);
+          setActiveTestimonialIndex(0);
+        }
       } catch (error) {
-        console.error('Error fetching feedback:', error);
+        console.error('Error fetching feedbacks:', error);
+        // Fallback to test testimonials if API fails
+        setTestimonials(testimonials);
+        setActiveTestimonialIndex(0);
+      } finally {
         setIsLoading(false);
       }
     };
@@ -220,7 +242,7 @@ const FeedbackPage: React.FC = () => {
     
     try {
       // Send feedback to backend API with timeout
-      await axios.post('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/feedback/', feedbackData, {
+      await postFeedback(feedbackData, {
         timeout: 8000 // 8 second timeout
       });
       

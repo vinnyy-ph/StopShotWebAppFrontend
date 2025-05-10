@@ -36,6 +36,7 @@ import { Line, Bar, Doughnut, Pie } from 'react-chartjs-2';
 import '../../../../src/utils/chartConfig';
 import { chartOptions } from '../../../../src/utils/chartConfig';
 import { Reservation, Employee } from '../dashboard';
+import { getFeedback as apiFetchFeedback, getReservations as apiFetchReservations } from '../../../utils/api';
 
 // Define the feedback data structure based on the API response
 interface FeedbackUser {
@@ -173,7 +174,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   const fetchFeedback = async () => {
     setFeedbackChartLoading(true);
     try {
-      const response = await axios.get('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/feedback/', {
+      const response = await apiFetchFeedback({
         headers: {
           'Authorization': `Token ${localStorage.getItem('authToken')}`
         }
@@ -259,7 +260,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({
     const fetchReservationData = async () => {
       setChartLoading(true);
       try {
-        const response = await axios.get('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/reservations/', {
+        const response = await apiFetchReservations({
           headers: {
             'Authorization': `Token ${localStorage.getItem('authToken')}`
           }
@@ -670,7 +671,7 @@ const DashboardOverview: React.FC<DashboardOverviewProps> = ({
                 onClick={async () => {
                   try {
                     setChartLoading(true);
-                    const response = await axios.get('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/reservations/', {
+                    const response = await apiFetchReservations({
                       headers: {
                         'Authorization': `Token ${localStorage.getItem('authToken')}`
                       }

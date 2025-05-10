@@ -1,5 +1,5 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import axios from 'axios';
+import { logout as apiLogout } from '../utils/api';
 
 interface AuthContextType {
   authToken: string | null;
@@ -47,7 +47,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
     try {
       // Call the logout endpoint if we have a token
       if (authToken) {
-        await axios.post('http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/auth/logout/', {}, {
+        await apiLogout({
           headers: {
             'Authorization': `Token ${authToken}`,
             'Content-Type': 'application/json'
