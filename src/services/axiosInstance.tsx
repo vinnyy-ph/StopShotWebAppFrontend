@@ -8,6 +8,7 @@ const axiosInstance = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
+    'X-Requested-With': 'XMLHttpRequest'  // Required by some CORS proxies
   }
 });
 
@@ -27,14 +28,19 @@ axiosInstance.interceptors.request.use(
 
 // Add a request interceptor to apply the proxy to all requests
 axiosInstance.interceptors.request.use(config => {
-  if (config.url && config.url.includes(API_BASE_URL)) {
-    config.url = createProxiedUrl(config.url);
-  }
-  // If baseURL is used, we need to proxy that too
-  if (config.baseURL && config.baseURL.includes(API_BASE_URL)) {
-    // For baseURL, we can simply set it to empty and handle the full URL in the url
-    config.baseURL = '';
-    config.url = createProxiedUrl(`${API_BASE_URL}${config.url}`);
+  // Only apply proxy in production environment
+  if (!import.meta.env.DEV) {
+    // If we have a full URL in the config.url
+    if (config.url && config.url.startsWith('http')) {
+      config.url = createProxiedUrl(config.url);
+    } 
+    // If we're using baseURL (more common case)
+    else if (config.baseURL) {
+      // Remove baseURL and build the complete URL
+      const fullUrl = `${config.baseURL}${config.url || ''}`;
+      config.baseURL = '';
+      config.url = createProxiedUrl(fullUrl);
+    }
   }
   return config;
 });

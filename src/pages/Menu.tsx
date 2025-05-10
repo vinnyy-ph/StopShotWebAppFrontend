@@ -71,6 +71,76 @@ interface CategoryWithIcon {
   icon: ReactNode;
 }
 
+// Fallback menu items in case API fails
+const fallbackMenuItems: MenuItem[] = [
+  {
+    menu_id: 1,
+    name: 'Signature Mojito',
+    description: 'Classic mojito with a twist of exotic berries, perfect for late-night sipping',
+    price: '250.00',
+    category: 'COCKTAILS',
+    is_available: true,
+    created_at: '2022-01-01',
+    updated_at: '2022-01-01',
+    image_url: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?q=80&w=1974&auto=format&fit=crop'
+  },
+  {
+    menu_id: 2,
+    name: 'Craft Beer Flight',
+    description: 'Selection of four premium craft beers, perfect for sharing during games',
+    price: '350.00',
+    category: 'BEER',
+    is_available: true,
+    created_at: '2022-01-01',
+    updated_at: '2022-01-01',
+    image_url: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    menu_id: 3,
+    name: 'Loaded Nachos',
+    description: 'Crispy tortilla chips loaded with cheese, jalapeños, and our secret house salsa',
+    price: '320.00',
+    category: 'APPETIZERS',
+    is_available: true,
+    created_at: '2022-01-01',
+    updated_at: '2022-01-01',
+    image_url: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    menu_id: 4,
+    name: 'Buffalo Wings',
+    description: 'Spicy buffalo wings with blue cheese dipping sauce',
+    price: '280.00',
+    category: 'APPETIZERS',
+    is_available: true,
+    created_at: '2022-01-01',
+    updated_at: '2022-01-01',
+    image_url: 'https://images.unsplash.com/photo-1608039755401-742074f0548d?q=80&w=2070&auto=format&fit=crop'
+  },
+  {
+    menu_id: 5,
+    name: 'Classic Margarita',
+    description: 'Tequila, triple sec, and lime juice with a salt rim',
+    price: '220.00',
+    category: 'COCKTAILS',
+    is_available: true,
+    created_at: '2022-01-01',
+    updated_at: '2022-01-01',
+    image_url: 'https://images.unsplash.com/photo-1632789395770-20e3d1d3e4df?q=80&w=1974&auto=format&fit=crop'
+  },
+  {
+    menu_id: 6,
+    name: 'Red Horse Beer',
+    description: 'Strong local beer, perfect for a night of billiards',
+    price: '110.00',
+    category: 'BEER',
+    is_available: true,
+    created_at: '2022-01-01',
+    updated_at: '2022-01-01',
+    image_url: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=2070&auto=format&fit=crop'
+  }
+];
+
 const MenuPage: React.FC = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [menuCategories, setMenuCategories] = useState<MenuCategory[]>([]);
@@ -104,31 +174,35 @@ const MenuPage: React.FC = () => {
     try {
       setLoading(true);
       
-      // Option 1: Using our API utility
-      const response = await getMenus();
-      const data: MenuItem[] = response.data;
-      
-      // Option 2: Using fetch with proxied URL (alternative approach)
-      // const apiUrl = 'http://stopshotapp-env-2.eba-8srvpzqc.ap-southeast-2.elasticbeanstalk.com/api/menus/list';
-      // const proxiedUrl = getProxiedUrl(apiUrl);
-      // const response = await fetch(proxiedUrl);
-      // if (!response.ok) {
-      //   throw new Error('Failed to fetch menu items');
-      // }
-      // const data: MenuItem[] = await response.json();
-      
-      // Group menu items by category
-      const categorizedMenu = processCategorizedData(data);
-      setMenuCategories(categorizedMenu);
-      
-      // Set featured items (popular or staff picks)
-      const featured = data.filter(item => 
-        (item.category === 'COCKTAILS' || item.category === 'APPETIZERS' || item.category === 'BEER') && 
-        item.is_available
-      ).slice(0, 6);
-      
-      setFeaturedItems(featured);
-      
+      // Try the API utility first
+      try {
+        const response = await getMenus();
+        const data: MenuItem[] = response.data;
+        
+        // Group menu items by category
+        const categorizedMenu = processCategorizedData(data);
+        setMenuCategories(categorizedMenu);
+        
+        // Set featured items (popular or staff picks)
+        const featured = data.filter(item => 
+          (item.category === 'COCKTAILS' || item.category === 'APPETIZERS' || item.category === 'BEER') && 
+          item.is_available
+        ).slice(0, 6);
+        
+        setFeaturedItems(featured);
+      } catch (apiError) {
+        console.error('Primary API request failed:', apiError);
+        
+        // Fallback to using static data
+        console.log('Using fallback menu data');
+        const categorizedMenu = processCategorizedData(fallbackMenuItems);
+        setMenuCategories(categorizedMenu);
+        
+        setFeaturedItems(fallbackMenuItems.filter(item => 
+          (item.category === 'COCKTAILS' || item.category === 'APPETIZERS' || item.category === 'BEER')
+        ).slice(0, 6));
+      }
+        
     } catch (error) {
       console.error('Error fetching menu data:', error);
       setError('Unable to load menu. Please try again later.');
