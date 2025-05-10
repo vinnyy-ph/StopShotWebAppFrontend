@@ -191,3 +191,69 @@
   text-align: center;
   margin-bottom: 60px;
 }
+
+
+/* Add these to your existing homepage.css file */
+
+/* Dark mode overrides */
+.homepage.dark-mode {
+  background-color: #121212;
+  color: #fff;
+}
+
+.home-content {
+  background-color: #121212;
+  color: #fff;
+  padding-top: 0;
+}
+
+/* Enhanced slideshow effects */
+.slide {
+  background-position: center;
+  background-size: cover;
+}
+
+.slide-title {
+  font-size: 4.5rem !important;
+  margin-bottom: 16px !important;
+  text-transform: uppercase;
+}
+
+.dot {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  width: 12px;
+  height: 12px;
+  margin: 0 6px;
+}
+
+.dot.active {
+  transform: scale(1.2);
+}
+
+/* Card animations */
+.menu-card, .event-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.menu-card:hover, .event-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+}
+
+/* Improved text readability */
+.section-title {
+  line-height: 1.2;
+  letter-spacing: 1px;
+}
+
+/* Responsive fixes */
+@media (max-width: 600px) {
+  .slide-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .slide-subtitle {
+    font-size: 1.1rem !important;
+  }
+}

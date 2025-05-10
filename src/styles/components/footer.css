@@ -1,160 +1,179 @@
 .footer-container {
-    background-color: #2F2F2F;
-    color: #FFFFFF;
-    padding: 40px 20px;
+  background-color: #0a0a0a;
+  color: #FFFFFF;
+  padding: 40px 20px;
+}
+
+/* Top Row */
+.footer-top-row {
+  margin-bottom: 40px;
+}
+
+/* Shared heading style for "Locate Us" and "Keep Updated" */
+.footer-heading {
+  color: #d38236; /* Orange color */
+  font-weight: 700;
+  margin-bottom: 20px;
+  letter-spacing: 1px;
+  position: relative;
+}
+
+/* Basic text style for address/hours, etc. */
+.footer-text {
+  margin-bottom: 5px;
+  transition: all 0.3s ease;
+}
+
+/* Subscription box styling */
+.subscribe-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 15px;
+  border: 2px solid #d38236;
+  border-radius: 999px;
+  background-color: rgba(211, 130, 54, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.subscribe-container:hover {
+  box-shadow: 0 0 15px rgba(211, 130, 54, 0.3);
+  transform: translateY(-3px);
+}
+
+.subscribe-input {
+  flex: 1;
+}
+
+.subscribe-button {
+  white-space: nowrap;
+  background-color: #d38236 !important;
+  color: #fff !important;
+  font-weight: bold !important;
+  border-radius: 999px !important;
+  transition: all 0.3s ease !important;
+}
+
+.subscribe-button:hover {
+  background-color: #b05e1d !important;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* Middle Row: Map */
+.footer-map-row {
+  margin: 40px 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.5);
+  position: relative;
+}
+
+/* Bottom Row */
+.footer-bottom-row {
+  margin-bottom: 30px;
+}
+
+/* Logo placeholder */
+.footer-logo {
+  max-width: 180px;
+  height: auto;
+  display: block;
+  margin-bottom: 15px;
+  filter: drop-shadow(0 0 10px rgba(211, 130, 54, 0.5));
+}
+
+/* Brand name styling */
+.footer-subtext {
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  color: #bbb;
+}
+
+.footer-contact {
+  margin-top: 15px;
+  color: #d38236;
+}
+
+/* Quick links */
+.footer-links-title {
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #d38236;
+  letter-spacing: 1px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.footer-links li {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: #FFFFFF;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.footer-links a:hover {
+  color: #d38236;
+  transform: translateX(5px);
+}
+
+.footer-links a svg {
+  margin-right: 8px;
+  color: #d38236;
+}
+
+/* Divider */
+.footer-divider {
+  width: 100%;
+  height: 1px;
+  background-color: rgba(255,255,255,0.1);
+  margin: 30px 0;
+}
+
+/* Copyright */
+.footer-copyright {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #777;
+  padding: 20px 0;
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
   }
-  
-  /* Top Row */
-  .footer-top-row {
-    margin-bottom: 20px;
+  40% {
+    transform: translateY(-10px);
   }
-  
-  /* Shared heading style for "Locate Us" and "Keep Updated" */
+  60% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Media queries for better responsive design */
+@media (max-width: 600px) {
   .footer-heading {
-    color: #FBAA00; /* Orange color */
-    font-weight: bold;
-    margin-bottom: 15px;
+    font-size: 1.5rem;
   }
   
-  /* Basic text style for address/hours, etc. */
-  .footer-text {
-    margin-bottom: 5px;
-  }
-  
-  /* Subscription box styling */
-  .subscribe-container {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-  }
-  
-  .subscribe-input {
-    flex: 1;
-  }
-  
-  .subscribe-button {
-    white-space: nowrap;
-  }
-  
-  /* Middle Row: Map */
   .footer-map-row {
-    margin: 20px 0;
-    border: 2px solid #444;
-    border-radius: 4px;
-    overflow: hidden;
-  }
-  
-  /* Bottom Row */
-  .footer-bottom-row {
-    margin-bottom: 20px;
-  }
-  
-  /* Logo placeholder */
-  .footer-logo {
-    max-width: 260px;
-    height: auto;
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  /* Brand name styling */
-  .footer-subtext {
-    font-size: 0.9rem;
-    margin-bottom: 5px;
-  }
-  
-  .footer-contact {
-    margin-top: 10px;
-  }
-  
-  /* Quick links */
-  .footer-links-title {
-    font-weight: bold;
-    margin-bottom: 10px;
+    height: 300px;
   }
   
   .footer-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    grid-template-columns: 1fr;
   }
-  
-  .footer-links li {
-    margin-bottom: 5px;
-  }
-  
-  .footer-links a {
-    color: #FFFFFF;
-    text-decoration: none;
-  }
-  
-  .footer-links a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Divider */
-  .footer-divider {
-    width: 100%;
-    height: 1px;
-    background-color: #555;
-    margin: 20px 0;
-  }
-  
-  /* Copyright */
-  .footer-copyright {
-    text-align: center;
-    font-size: 0.8rem;
-    color: #AAAAAA;
-  }
-  
-
-  
-  /* Outer container that gives the pill shape, orange border, and dark background */
-  .subscribe-container {
-    display: flex;
-    align-items: center;
-    border: 2px solid #FBAA00;  /* Orange border */
-    border-radius: 999px;       /* Creates the pill shape */
-    background-color: #3A3A3A;  /* Dark gray background */
-    padding: 4px;               /* Space inside the pill */
-  }
-  
-  /* Make the text field fill remaining space in the pill container */
-  .subscribe-input {
-    flex: 1;
-  }
-  
-  /* Remove the default MUI outline, so we see only the orange border from .subscribe-container */
-  .subscribe-input .MuiOutlinedInput-notchedOutline {
-    border: none;
-  }
-  
-  /* Keep the corners rounded to match the pill container */
-  .subscribe-input .MuiOutlinedInput-root {
-    border-radius: 999px;
-    background-color: transparent;  /* Merge seamlessly with the pill background */
-    color: #FFFFFF;
-  }
-  
-  /* Placeholder text color */
-  .subscribe-input .MuiOutlinedInput-input::placeholder {
-    color: #CCCCCC;
-  }
-  
-  /* Actual typed text color */
-  .subscribe-input .MuiOutlinedInput-input {
-    color: #FFFFFF;
-  }
-  
-  /* Subscribe button styling */
-  .subscribe-button {
-    border-radius: 999px;
-    font-weight: bold;
-    padding: 6px 16px;
-    margin-left: 8px;
-    background-color: #FBAA00;
-    color: #2F2F2F;
-    text-transform: uppercase; /* optional: keeps SUBSCRIBE in uppercase */
-    border-radius: 999px !important;       /* Creates the pill shape */
-  }
-  
+}

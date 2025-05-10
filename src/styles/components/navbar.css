@@ -1,60 +1,88 @@
 .navbar-appbar {
-    background: #d38236 !important;
-    padding: 0 50px;
-    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
-    display: flex;
-    justify-content: center;
-  }
+  background: #121212 !important;
+  padding: 0;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+}
 
+.navbar-logo-container {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+}
 
-  
-  .navbar-logo-container {
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-  }
-  
-  .navbar-logo {
-    height: 40px;
-    margin-right: 10px;
-  }
-  
-  .nav-button {
-    margin: 0 10px !important;
-    padding: 5px 10px !important;
-    font-size: 1rem;
-    font-weight: 600 !important;
-    color: inherit;
-    border-radius: 100px; 
-  }
-  
-  .nav-button:hover {
-    background-color: #373737;  
-    color: #d38236;   
-    border-radius: 100px;
-  }
-  
-  .drawer-container {
-    width: 250px;
-    background-color: #fff;
-    height: 100%;
-  }
-  
-  .drawer-close {
-    display: flex;
-    justify-content: flex-end;
-    padding: 16px;
-  }
+.navbar-logo {
+  height: 40px;
+  margin-right: 10px;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 5px rgba(211, 130, 54, 0.5));
+}
 
-  .drawer-container .MuiListItem-root {
-    padding: 16px;
-  }
-  
-  .drawer-container .MuiListItem-root:hover {
-    background-color: #f2f2f2;
-  }
+.nav-button {
+  margin: 0 5px !important;
+  padding: 8px 16px !important;
+  font-size: 0.95rem;
+  font-weight: 600 !important;
+  color: #fff;
+  border-radius: 100px; 
+  transition: all 0.3s ease;
+}
 
-  .drawer-container .MuiTypography-root {
-    font-weight: 600;
-    color: #333;
+.nav-button:hover {
+  background-color: rgba(211, 130, 54, 0.1);
+  color: #d38236;
+  transform: translateY(-3px);
+}
+
+.drawer-container {
+  width: 280px;
+  background-color: #121212;
+  color: #fff;
+  height: 100%;
+}
+
+.drawer-close {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px;
+}
+
+.drawer-container .MuiListItem-root {
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.drawer-container .MuiListItem-root:hover {
+  background-color: rgba(211, 130, 54, 0.1);
+  transform: translateX(5px);
+}
+
+.drawer-container .MuiTypography-root {
+  font-weight: 600;
+  color: #fff;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+}
